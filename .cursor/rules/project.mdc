@@ -1,0 +1,56 @@
+---
+description: GreenEyes NYC project rules and architecture context
+globs: ["**/*.jsx", "**/*.js"]
+---
+
+# GreenEyes NYC — Project Rules
+
+## What This Project Is
+A 6-page marketing + product website for a NYC energy monitoring SaaS platform. The platform helps building owners comply with NYC Local Law 97 (LL97) by monitoring energy usage, solar output, compliance status, and active alerts.
+
+## 6-Page Layout Summary
+1. **Intro** — grass green bg, animated SVG wires, left-aligned tagline
+2. **NYC** — city skyline, 4 neutral blue feature circles (Saving/Reliable/Fast/Free)
+3. **Dashboard** — full live monitoring dashboard (calls real API)
+4. **Devices** — iPad + 4 iPhone 17 mockups (static display)
+5. **Features** — blueprint building + 5 feature buttons + half-iPad (right overflow)
+6. **Outro** — grass green bg, wires, right-aligned closing tagline
+
+## Key Data Flows (Page 3 Dashboard)
+- `buildings` → BuildingSelector dropdown header
+- `ll97_limits` + `compliance_snapshots` → FineRiskMeter, ComplianceProgress bars, CountdownTimer
+- `energy_readings` → EnergyChart (Recharts BarChart), CurrentUsage KPI
+- `energy_readings` + `floors` → FloorHeatmap (30-cell grid)
+- `solar_readings` → SolarWidget (AC/E/H scores), SolarOutput KPI
+- `alerts` → AlertsPanel, bell badge in header
+- `sensors` → SystemsStatus card, live dot in header
+- `users` + `user_buildings` → user avatar, building dropdown filter
+
+## iPhone Content (Page 4)
+- iPhone 1: Energy bar chart + current kW
+- iPhone 2: Solar output + AC/E/H scores
+- iPhone 3: Active alerts list
+- iPhone 4: LL97 compliance progress bars
+
+## File Structure Pattern
+```
+frontend/src/
+  api/          → API functions with mock fallbacks
+  components/
+    pages/      → Page1–6 components
+    dashboard/  → Widget components
+    ui/         → IPhoneMockup, IPadMockup, WireAnimation, BlueprintBuilding
+```
+
+## Code Conventions
+- No TypeScript — plain JSX
+- Tailwind for all styles; inline style only for dynamic values
+- safeFetch pattern in all API files (try/catch with mock fallback)
+- React hooks: useState + useEffect for all data fetching
+- Recharts for all charts
+
+## Backend Pattern (Express + SQLite)
+- Routes: one file per resource in `backend/routes/`
+- DB: `better-sqlite3` synchronous API
+- Schema init: `backend/db/database.js` (auto-runs on first import)
+- Seed: `backend/db/seed.js` (run with `npm run seed`)
