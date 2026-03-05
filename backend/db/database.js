@@ -1,18 +1,80 @@
-const Database = require('better-sqlite3')
 const path = require('path')
+const fs = require('fs')
 
 const DB_PATH = path.join(__dirname, 'greeneyes.sqlite')
 
-let db
+let SQL = null
+let db = null
+let initDone = false
 
-function getDB() {
-  if (!db) {
-    db = new Database(DB_PATH)
-    db.pragma('journal_mode = WAL')
-    db.pragma('foreign_keys = ON')
-    initSchema()
+function toSqlJsParams(obj) {
+  if (obj === undefined || obj === null) return []
+  if (Array.isArray(obj)) return obj
+  const out = {}
+  for (const [k, v] of Object.entries(obj)) {
+    out[':' + k.replace(/^@/, '')] = v
   }
-  return db
+  return out
+}
+
+function toSqlJsSql(sql) {
+  return sql.replace(/@(\w+)/g, ':$1')
+}
+
+function wrapDb(nativeDb) {
+  return {
+    exec(sql) {
+      nativeDb.run(sql)
+    },
+    prepare(sql) {
+      const sqlJsSql = toSqlJsSql(sql)
+      return {
+        all(...args) {
+          const params = args.length === 1 && typeof args[0] === 'object' && !Array.isArray(args[0]) ? toSqlJsParams(args[0]) : args
+          const stmt = nativeDb.prepare(sqlJsSql)
+          stmt.bind(params)
+          const rows = []
+          while (stmt.step()) rows.push(stmt.getAsObject())
+          stmt.free()
+          return rows
+        },
+        get(...args) {
+          const params = args.length === 1 && typeof args[0] === 'object' && !Array.isArray(args[0]) ? toSqlJsParams(args[0]) : args
+          const stmt = nativeDb.prepare(sqlJsSql)
+          stmt.bind(params)
+          const row = stmt.step() ? stmt.getAsObject() : null
+          stmt.free()
+          return row
+        },
+        run(...args) {
+          const params = args.length === 1 && typeof args[0] === 'object' && !Array.isArray(args[0]) ? toSqlJsParams(args[0]) : args
+          const stmt = nativeDb.prepare(sqlJsSql)
+          stmt.bind(params)
+          stmt.step()
+          stmt.free()
+          const lastId = nativeDb.exec('SELECT last_insert_rowid() as id')
+          const lastInsertRowid = lastId.length && lastId[0].values[0] ? lastId[0].values[0][0] : 0
+          return { lastInsertRowid }
+        },
+      }
+    },
+  }
+}
+
+async function initDb() {
+  if (initDone) return
+  const initSqlJs = require('sql.js')
+  SQL = await initSqlJs({
+    locateFile: (file) => path.join(__dirname, '..', 'node_modules', 'sql.js', 'dist', file),
+  })
+  let data = null
+  if (fs.existsSync(DB_PATH)) {
+    data = fs.readFileSync(DB_PATH)
+  }
+  db = data ? new SQL.Database(data) : new SQL.Database()
+  initSchema()
+  initDone = true
+  return wrapDb(db)
 }
 
 function initSchema() {
@@ -126,4 +188,16 @@ function initSchema() {
   `)
 }
 
-module.exports = { getDB }
+function getDB() {
+  if (!initDone) throw new Error('Database not initialized. Call initDb() first (await in server/seed).')
+  return wrapDb(db)
+}
+
+function saveDb() {
+  if (!db) return
+  const data = db.export()
+  const buffer = Buffer.from(data)
+  fs.writeFileSync(DB_PATH, buffer)
+}
+
+module.exports = { initDb, getDB, saveDb }

@@ -6,10 +6,18 @@ const { getDB } = require('../db/database')
 router.get('/:buildingId', (req, res) => {
   const db = getDB()
   const days = parseInt(req.query.days) || 7
-  const readings = db.prepare(
-    'SELECT * FROM energy_readings WHERE building_id = ? ORDER BY reading_date DESC LIMIT ?'
+  const rows = db.prepare(
+    'SELECT reading_date, kwh_actual, kwh_limit FROM energy_readings WHERE building_id = ? ORDER BY reading_date DESC LIMIT ?'
   ).all(req.params.buildingId, days)
-  res.json(readings.reverse())
+  const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const out = rows.reverse().map(r => ({
+    day: r.reading_date && r.reading_date.length === 10
+      ? DAY_NAMES[new Date(r.reading_date + 'T12:00:00').getDay()]
+      : r.reading_date,
+    kwh_actual: r.kwh_actual,
+    kwh_limit: r.kwh_limit,
+  }))
+  res.json(out)
 })
 
 // GET /api/energy/:buildingId/current

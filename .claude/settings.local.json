@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init)",
+      "Bash(git add .gitignore .cursorrules QUICK_START.md __FULL-STACK-SETUP.md__ __README.md__ __SETUP-GUIDE.md__ .cursor/ backend/ frontend/)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

@@ -1,11 +1,13 @@
-const { getDB } = require('./database')
+const { initDb, getDB, saveDb } = require('./database')
 
-const db = getDB()
+;(async () => {
+  await initDb()
+  const db = getDB()
 
-console.log('🌱 Seeding GreenEyes NYC database...')
+  console.log('🌱 Seeding GreenEyes NYC database...')
 
-// Clear existing data
-db.exec(`
+  // Clear existing data
+  db.exec(`
   DELETE FROM user_buildings;
   DELETE FROM users;
   DELETE FROM floors;
@@ -49,7 +51,7 @@ insertCompliance.run({ building_id: buildingIds[0], snapshot_date: today, ll97_e
 insertCompliance.run({ building_id: buildingIds[1], snapshot_date: today, ll97_emissions_pct: 61, energy_intensity_pct: 49, carbon_offset_pct: 55, fine_risk_amount: 18500, days_remaining: 60, deadline: '2025-05-01' })
 insertCompliance.run({ building_id: buildingIds[2], snapshot_date: today, ll97_emissions_pct: 88, energy_intensity_pct: 71, carbon_offset_pct: 29, fine_risk_amount: 74000, days_remaining: 60, deadline: '2025-05-01' })
 
-// ── Energy Readings (7 days) ──
+// ── Energy Readings (7 days per building) ──
 const insertEnergy = db.prepare(`
   INSERT INTO energy_readings (building_id, reading_date, kwh_actual, kwh_limit, peak_demand_kw, previous_week_kw)
   VALUES (@building_id, @reading_date, @kwh_actual, @kwh_limit, @peak_demand_kw, @previous_week_kw)
@@ -57,15 +59,16 @@ const insertEnergy = db.prepare(`
 const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const energySamples = [820, 910, 875, 760, 930, 680, 847]
 
-buildingIds.forEach(id => {
+buildingIds.forEach((id) => {
   dayNames.forEach((day, i) => {
     const variance = Math.round((Math.random() - 0.5) * 80)
+    const kwh_actual = energySamples[i] + variance
     insertEnergy.run({
       building_id: id,
       reading_date: day,
-      kwh_actual: energySamples[i] + variance,
+      kwh_actual,
       kwh_limit: 900,
-      peak_demand_kw: energySamples[i] + variance,
+      peak_demand_kw: kwh_actual,
       previous_week_kw: energySamples[i] - 30,
     })
   })
@@ -132,4 +135,6 @@ buildingIds.forEach(id => {
   insertUB.run(u2.lastInsertRowid, id)
 })
 
-console.log('✅ Seed complete — 3 buildings, readings, alerts, sensors, users loaded.')
+  console.log('✅ Seed complete — 3 buildings, readings, alerts, sensors, users loaded.')
+  saveDb()
+})()

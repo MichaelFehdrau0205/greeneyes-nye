@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { getDB } = require('./db/database')
+const { initDb } = require('./db/database')
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -8,9 +8,6 @@ const PORT = process.env.PORT || 4000
 // ── Middleware ──
 app.use(cors({ origin: ['http://localhost:3000', 'http://127.0.0.1:3000'] }))
 app.use(express.json())
-
-// ── Initialize DB ──
-getDB() // triggers schema creation on first run
 
 // ── Routes ──
 app.use('/api/buildings', require('./routes/buildings'))
@@ -35,8 +32,11 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: 'Internal server error', message: err.message })
 })
 
-app.listen(PORT, () => {
-  console.log(`🌿 GreenEyes NYC API running on http://localhost:${PORT}`)
-  console.log(`   Routes: /api/buildings  /api/energy  /api/solar  /api/alerts  /api/sensors`)
-  console.log(`   Health: http://localhost:${PORT}/api/health`)
-})
+;(async () => {
+  await initDb()
+  app.listen(PORT, () => {
+    console.log(`🌿 GreenEyes NYC API running on http://localhost:${PORT}`)
+    console.log(`   Routes: /api/buildings  /api/energy  /api/solar  /api/alerts  /api/sensors`)
+    console.log(`   Health: http://localhost:${PORT}/api/health`)
+  })
+})()

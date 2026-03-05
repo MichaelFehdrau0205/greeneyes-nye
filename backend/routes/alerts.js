@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getDB } = require('../db/database')
+const { getDB, saveDb } = require('../db/database')
 
 // GET /api/alerts/:buildingId
 router.get('/:buildingId', (req, res) => {
@@ -24,6 +24,7 @@ router.get('/:buildingId/count', (req, res) => {
 router.patch('/:id/resolve', (req, res) => {
   const db = getDB()
   db.prepare('UPDATE alerts SET resolved_at = ? WHERE id = ?').run(new Date().toISOString(), req.params.id)
+  saveDb()
   res.json({ success: true })
 })
 

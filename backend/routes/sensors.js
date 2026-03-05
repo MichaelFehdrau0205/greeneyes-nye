@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getDB } = require('../db/database')
+const { getDB, saveDb } = require('../db/database')
 
 // GET /api/sensors/:buildingId
 router.get('/:buildingId', (req, res) => {
@@ -27,6 +27,7 @@ router.get('/:buildingId/status', (req, res) => {
 router.patch('/:id/heartbeat', (req, res) => {
   const db = getDB()
   db.prepare('UPDATE sensors SET last_heartbeat = ? WHERE id = ?').run(new Date().toISOString(), req.params.id)
+  saveDb()
   res.json({ success: true })
 })
 
