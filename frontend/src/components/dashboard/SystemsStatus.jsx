@@ -1,9 +1,9 @@
 import React from 'react'
 
 const STATUS_STYLE = {
-  ONLINE: { dot: 'bg-green-400', badge: 'text-green-300 bg-green-500/10 border-green-500/30' },
-  WARN: { dot: 'bg-yellow-400 animate-pulse', badge: 'text-yellow-300 bg-yellow-500/10 border-yellow-500/30' },
-  ALERT: { dot: 'bg-red-400 animate-pulse', badge: 'text-red-300 bg-red-500/10 border-red-500/30' },
+  ONLINE: { dot: 'bg-green-400/90', badge: 'text-green-300 bg-green-400/10 border-green-400/25' },
+  WARN: { dot: 'bg-amber-400 animate-pulse', badge: 'text-amber-200 bg-amber-400/10 border-amber-400/25' },
+  ALERT: { dot: 'bg-red-400 animate-pulse', badge: 'text-red-300 bg-red-400/10 border-red-400/25' },
 }
 
 const SENSOR_ICON = {

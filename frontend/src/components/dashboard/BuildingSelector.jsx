@@ -13,7 +13,7 @@ export default function BuildingSelector({ selectedId, onChange }) {
       <select
         value={selectedId}
         onChange={e => onChange(Number(e.target.value))}
-        className="appearance-none bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-green-500 cursor-pointer"
+        className="appearance-none bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-green-400 cursor-pointer"
       >
         {buildings.map(b => (
           <option key={b.id} value={b.id}>{b.name}</option>

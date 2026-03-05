@@ -27,14 +27,14 @@ export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
   const needleDeg = startDeg + (animated / 100) * totalArc
 
   const zones = [
-    { from: startDeg, to: startDeg + totalArc * 0.33, color: '#22c55e' },
-    { from: startDeg + totalArc * 0.33, to: startDeg + totalArc * 0.66, color: '#f59e0b' },
-    { from: startDeg + totalArc * 0.66, to: endDeg, color: '#ef4444' },
+    { from: startDeg, to: startDeg + totalArc * 0.33, color: '#4ade80' },
+    { from: startDeg + totalArc * 0.33, to: startDeg + totalArc * 0.66, color: '#fbbf24' },
+    { from: startDeg + totalArc * 0.66, to: endDeg, color: '#f87171' },
   ]
 
   const needleEnd = polarToXY(cx, cy, r - 10, needleDeg)
 
-  const riskColor = riskPct < 33 ? '#22c55e' : riskPct < 66 ? '#f59e0b' : '#ef4444'
+  const riskColor = riskPct < 33 ? '#4ade80' : riskPct < 66 ? '#fbbf24' : '#f87171'
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 flex flex-col items-center">
@@ -82,9 +82,9 @@ export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
         <circle cx={cx} cy={cy} r="5" fill="white" />
 
         {/* Labels */}
-        <text x={cx - r - 4} y={cy + 24} fill="#22c55e" fontSize="7" fontFamily="sans-serif" textAnchor="middle">LOW</text>
-        <text x={cx} y={cy - r - 10} fill="#f59e0b" fontSize="7" fontFamily="sans-serif" textAnchor="middle">MOD</text>
-        <text x={cx + r + 4} y={cy + 24} fill="#ef4444" fontSize="7" fontFamily="sans-serif" textAnchor="middle">HIGH</text>
+        <text x={cx - r - 4} y={cy + 24} fill="#4ade80" fontSize="7" fontFamily="sans-serif" textAnchor="middle">LOW</text>
+        <text x={cx} y={cy - r - 10} fill="#fbbf24" fontSize="7" fontFamily="sans-serif" textAnchor="middle">MOD</text>
+        <text x={cx + r + 4} y={cy + 24} fill="#f87171" fontSize="7" fontFamily="sans-serif" textAnchor="middle">HIGH</text>
 
         {/* Dollar amount */}
         <text x={cx} y={cy + 32} fill="white" fontSize="13" fontFamily="sans-serif" fontWeight="700" textAnchor="middle">

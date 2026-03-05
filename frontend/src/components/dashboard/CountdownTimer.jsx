@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function CountdownTimer({ days = 60, deadline = '2025-05-01' }) {
-  const urgency = days <= 30 ? 'text-red-400 border-red-500/30' : days <= 60 ? 'text-yellow-400 border-yellow-500/30' : 'text-green-400 border-green-500/30'
-  const ring = days <= 30 ? '#ef4444' : days <= 60 ? '#f59e0b' : '#22c55e'
+  const urgency = days <= 30 ? 'text-red-400 border-red-400/25' : days <= 60 ? 'text-amber-400 border-amber-400/25' : 'text-green-400 border-green-400/25'
+  const ring = days <= 30 ? '#f87171' : days <= 60 ? '#fbbf24' : '#4ade80'
 
   return (
     <div className={`dashboard-panel rounded-xl p-4 border ${urgency.split(' ')[1]} flex flex-col items-center justify-center text-center`}>

@@ -9,7 +9,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       <div className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs">
         <p className="text-gray-400 mb-1">{label}</p>
         <p className="text-white font-bold">{val} kWh</p>
-        {val > limit && <p className="text-red-400">▲ {val - limit} over limit</p>}
+        {val > limit && <p className="text-red-400/90">▲ {val - limit} over limit</p>}
       </div>
     )
   }
@@ -38,12 +38,12 @@ export default function EnergyChart({ data = [] }) {
           <XAxis dataKey="day" tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-          <ReferenceLine y={900} stroke="#ef4444" strokeDasharray="4 2" strokeWidth={1.5} label={{ value: 'LL97 Limit', fill: '#ef4444', fontSize: 9, position: 'right' }} />
+          <ReferenceLine y={900} stroke="#f87171" strokeDasharray="4 2" strokeWidth={1.5} label={{ value: 'LL97 Limit', fill: '#f87171', fontSize: 9, position: 'right' }} />
           <Bar dataKey="kwh_actual" radius={[3, 3, 0, 0]} maxBarSize={32}>
             {chartData.map((entry, idx) => (
               <Cell
                 key={idx}
-                fill={entry.kwh_actual > entry.kwh_limit ? '#ef4444' : '#22c55e'}
+                fill={entry.kwh_actual > entry.kwh_limit ? '#f87171' : '#4ade80'}
                 fillOpacity={0.85}
               />
             ))}

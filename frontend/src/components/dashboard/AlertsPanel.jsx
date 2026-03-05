@@ -1,8 +1,8 @@
 import React from 'react'
 
 const SEVERITY_STYLE = {
-  critical: { dot: 'bg-red-400', badge: 'bg-red-500/15 text-red-300 border-red-500/30', label: 'CRITICAL' },
-  warning: { dot: 'bg-yellow-400', badge: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30', label: 'WARNING' },
+  critical: { dot: 'bg-red-400', badge: 'bg-red-400/15 text-red-300 border-red-400/25', label: 'CRITICAL' },
+  warning: { dot: 'bg-amber-400', badge: 'bg-amber-400/15 text-amber-200 border-amber-400/25', label: 'WARNING' },
   info: { dot: 'bg-blue-400', badge: 'bg-blue-500/15 text-blue-300 border-blue-500/30', label: 'INFO' },
 }
 
@@ -23,10 +23,10 @@ export default function AlertsPanel({ alerts = [] }) {
   const data = alerts.length ? alerts : defaultAlerts
 
   return (
-    <div className="dashboard-panel rounded-xl p-4 border border-red-500/20 kpi-glow-red h-full">
+    <div className="dashboard-panel rounded-xl p-4 border border-red-400/20 kpi-glow-red h-full">
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs text-gray-400 font-medium tracking-wide uppercase">Active Alerts</p>
-        <span className="bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse">
+        <span className="bg-red-400 text-white text-xs font-black px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse">
           {data.length}
         </span>
       </div>

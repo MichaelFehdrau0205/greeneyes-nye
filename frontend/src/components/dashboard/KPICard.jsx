@@ -6,11 +6,11 @@ export default function KPICard({ title, value, unit, change, direction, icon, g
   const arrow = isUp ? '▲' : '▼'
 
   const borderColor = {
-    green: 'border-green-500/20',
-    red: 'border-red-500/30',
+    green: 'border-green-400/20',
+    red: 'border-red-400/25',
     blue: 'border-blue-400/20',
-    yellow: 'border-yellow-400/20',
-  }[glowColor] || 'border-green-500/20'
+    yellow: 'border-amber-400/20',
+  }[glowColor] || 'border-green-400/20'
 
   const glowClass = {
     green: 'kpi-glow-green',

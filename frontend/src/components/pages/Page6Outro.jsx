@@ -1,7 +1,10 @@
 import React from 'react'
 import WireAnimation from '../ui/WireAnimation'
+import { usePageNav } from '../../context/PageNavContext'
 
 export default function Page6Outro() {
+  const { goToPage } = usePageNav()
+
   return (
     <section
       id="page6"
@@ -35,12 +38,13 @@ export default function Page6Outro() {
 
         {/* CTA */}
         <div className="mt-10 flex items-center justify-end gap-4">
-          <a
-            href="#page1"
+          <button
+            type="button"
+            onClick={() => goToPage(0)}
             className="text-green-100 font-semibold text-sm hover:text-white transition-colors flex items-center gap-1"
           >
             ↑ Back to Top
-          </a>
+          </button>
           <a
             href="mailto:hello@greeneyesnyc.com"
             className="inline-flex items-center gap-2 bg-white text-green-700 font-black px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-200"

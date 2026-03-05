@@ -36,7 +36,7 @@ export default function Page3Dashboard() {
     getSensors(buildingId).then(setSensors)
   }, [buildingId])
 
-  const user = { initials: 'MF', name: 'Michael Fehdrau' }
+  const user = { initials: 'JP', name: 'Joel Philip' }
 
   return (
     <section
@@ -49,10 +49,10 @@ export default function Page3Dashboard() {
         <div className="flex items-center gap-3">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-green-500 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-green-500/90 flex items-center justify-center">
               <span className="text-white text-xs font-black">G</span>
             </div>
-            <span className="text-white font-black text-base tracking-tight">GreenEyes <span className="text-green-400">NYC</span></span>
+            <span className="text-white font-black text-base tracking-tight">GreenEyes <span className="text-green-400/90">NYC</span></span>
           </div>
           <div className="h-4 w-px bg-gray-700" />
           <BuildingSelector selectedId={buildingId} onChange={setBuildingId} />
@@ -61,22 +61,22 @@ export default function Page3Dashboard() {
         <div className="flex items-center gap-4">
           {/* Status dot */}
           <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-[10px] text-green-400 font-medium">LIVE</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-green-400/80 animate-pulse" />
+            <span className="text-[10px] text-green-400/90 font-medium">LIVE</span>
           </div>
 
           {/* Alert bell */}
           <button className="relative p-2 rounded-lg hover:bg-gray-800 transition-colors">
             <span className="text-lg">🔔</span>
             {alerts.length > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
+              <span className="absolute -top-0.5 -right-0.5 bg-red-400 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
                 {alerts.length}
               </span>
             )}
           </button>
 
           {/* User avatar */}
-          <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center cursor-pointer hover:bg-green-500 transition-colors">
+          <div className="w-8 h-8 rounded-full bg-green-600/90 flex items-center justify-center cursor-pointer hover:bg-green-500/90 transition-colors">
             <span className="text-white text-xs font-black">{user.initials}</span>
           </div>
         </div>

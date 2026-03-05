@@ -26,9 +26,9 @@ function Bar({ label, pct, color }) {
 
 export default function ComplianceProgress({ data }) {
   const bars = [
-    { label: 'LL97 Emissions', pct: data?.ll97_emissions_pct ?? 73, color: '#ef4444' },
-    { label: 'Energy Intensity', pct: data?.energy_intensity_pct ?? 58, color: '#f59e0b' },
-    { label: 'Carbon Offset', pct: data?.carbon_offset_pct ?? 41, color: '#22c55e' },
+    { label: 'LL97 Emissions', pct: data?.ll97_emissions_pct ?? 73, color: '#f87171' },
+    { label: 'Energy Intensity', pct: data?.energy_intensity_pct ?? 58, color: '#fbbf24' },
+    { label: 'Carbon Offset', pct: data?.carbon_offset_pct ?? 41, color: '#4ade80' },
   ]
 
   return (

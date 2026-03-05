@@ -1,7 +1,10 @@
 import React from 'react'
 import WireAnimation from '../ui/WireAnimation'
+import { usePageNav } from '../../context/PageNavContext'
 
 export default function Page1Intro() {
+  const { goToPage } = usePageNav()
+
   return (
     <section
       className="relative min-h-screen overflow-hidden flex flex-col justify-center"
@@ -34,19 +37,21 @@ export default function Page1Intro() {
 
         {/* CTA */}
         <div className="mt-10 flex items-center gap-4">
-          <a
-            href="#page3"
+          <button
+            type="button"
+            onClick={() => goToPage(2)}
             className="inline-flex items-center gap-2 bg-white text-green-700 font-black px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-200"
           >
             See the Platform
             <span className="text-xl">→</span>
-          </a>
-          <a
-            href="#page2"
+          </button>
+          <button
+            type="button"
+            onClick={() => goToPage(1)}
             className="text-green-100 font-semibold text-sm hover:text-white transition-colors flex items-center gap-1"
           >
             Learn More ↓
-          </a>
+          </button>
         </div>
 
         {/* Stats row */}
@@ -66,12 +71,13 @@ export default function Page1Intro() {
 
       {/* Bottom gradient fade */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-green-900/30 to-transparent" />
-
-      {/* Scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-green-200 opacity-60">
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
+      
+     {/* Scroll / swipe hint */}
+       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-green-200 opacity-60">
+        <span className="text-xs tracking-widest uppercase">Use buttons below to navigate</span>
         <div className="w-px h-8 bg-green-200 animate-bounce" />
       </div>
-    </section>
+  
+       </section>
   )
 }

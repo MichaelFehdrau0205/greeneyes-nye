@@ -4,18 +4,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-}
-
-section {
-  scroll-snap-align: start;
 }
 
 /* Wire animation */
@@ -41,10 +38,10 @@ section {
   100% { width: var(--bar-width, 50%); }
 }
 
-/* Glowing alert */
+/* Glowing alert (toned) */
 @keyframes glowRed {
-  0%, 100% { box-shadow: 0 0 6px rgba(239,68,68,0.4); }
-  50% { box-shadow: 0 0 18px rgba(239,68,68,0.8); }
+  0%, 100% { box-shadow: 0 0 6px rgba(248,113,113,0.3); }
+  50% { box-shadow: 0 0 14px rgba(248,113,113,0.6); }
 }
 
 /* Blueprint grid */
@@ -63,13 +60,13 @@ section {
   border: 1px solid rgba(99, 102, 241, 0.15);
 }
 
-/* KPI card glow */
+/* KPI card glow (toned) */
 .kpi-glow-green {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.12);
 }
 
 .kpi-glow-red {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.15);
   animation: glowRed 2s ease-in-out infinite;
 }
 

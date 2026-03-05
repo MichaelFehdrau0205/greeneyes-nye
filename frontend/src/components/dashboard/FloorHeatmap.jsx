@@ -1,9 +1,9 @@
 import React from 'react'
 
 const STATUS_COLOR = {
-  normal: { bg: '#22c55e', opacity: 0.45, label: 'NORM' },
-  elevated: { bg: '#f59e0b', opacity: 0.6, label: 'ELEV' },
-  critical: { bg: '#ef4444', opacity: 0.75, label: 'CRIT' },
+  normal: { bg: '#4ade80', opacity: 0.45, label: 'NORM' },
+  elevated: { bg: '#fbbf24', opacity: 0.6, label: 'ELEV' },
+  critical: { bg: '#f87171', opacity: 0.75, label: 'CRIT' },
 }
 
 export default function FloorHeatmap({ floors = [] }) {
