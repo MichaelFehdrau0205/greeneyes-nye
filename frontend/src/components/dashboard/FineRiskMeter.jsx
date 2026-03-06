@@ -12,7 +12,7 @@ function arcPath(cx, cy, r, startDeg, endDeg) {
   return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`
 }
 
-export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
+export default function FineRiskMeter({ riskAmount = 0, riskPct = 0 }) {
   const [animated, setAnimated] = useState(0)
 
   useEffect(() => {
@@ -23,8 +23,11 @@ export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
   const cx = 100, cy = 100, r = 72
   const startDeg = -130
   const endDeg = 130
+  const safePct = Math.max(0, Math.min(100, riskPct || 0))
+  const safeAmount = typeof riskAmount === 'number' ? riskAmount : 0
+
   const totalArc = endDeg - startDeg
-  const needleDeg = startDeg + (animated / 100) * totalArc
+  const needleDeg = startDeg + (Math.max(0, Math.min(100, animated || 0)) / 100) * totalArc
 
   const zones = [
     { from: startDeg, to: startDeg + totalArc * 0.33, color: '#4ade80' },
@@ -34,7 +37,7 @@ export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
 
   const needleEnd = polarToXY(cx, cy, r - 10, needleDeg)
 
-  const riskColor = riskPct < 33 ? '#4ade80' : riskPct < 66 ? '#fbbf24' : '#f87171'
+  const riskColor = safePct < 33 ? '#4ade80' : safePct < 66 ? '#fbbf24' : '#f87171'
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 flex flex-col items-center">
@@ -88,7 +91,7 @@ export default function FineRiskMeter({ riskAmount = 42000, riskPct = 58 }) {
 
         {/* Dollar amount */}
         <text x={cx} y={cy + 32} fill="white" fontSize="13" fontFamily="sans-serif" fontWeight="700" textAnchor="middle">
-          ${riskAmount.toLocaleString()}
+          ${safeAmount.toLocaleString()}
         </text>
         <text x={cx} y={cy + 44} fill="#6b7280" fontSize="7" fontFamily="sans-serif" textAnchor="middle">projected fine</text>
       </svg>

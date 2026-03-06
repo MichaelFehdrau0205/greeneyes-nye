@@ -1,4 +1,4 @@
-const API_BASE = '/api'
+import { apiCall } from '../lib/apiClient'
 
 const MOCK_ENERGY_READINGS = [
   { day: 'Mon', kwh_actual: 820, kwh_limit: 900 },
@@ -23,21 +23,32 @@ const MOCK_FLOOR_HEATMAP = Array.from({ length: 30 }, (_, i) => ({
   kwh: Math.round(28 + Math.random() * 20),
 }))
 
-async function safeFetch(url, fallback) {
+export const getEnergyReadings = async (buildingId, days = 7) => {
+  if (!buildingId) return MOCK_ENERGY_READINGS
   try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return res.json()
+    const data = await apiCall(`/energy/${buildingId}?days=${days}`)
+    return Array.isArray(data) ? data : MOCK_ENERGY_READINGS
   } catch {
-    return fallback
+    return MOCK_ENERGY_READINGS
   }
 }
 
-export const getEnergyReadings = (buildingId, days = 7) =>
-  safeFetch(`${API_BASE}/energy/${buildingId}?days=${days}`, MOCK_ENERGY_READINGS)
+export const getCurrentUsage = async (buildingId) => {
+  if (!buildingId) return MOCK_CURRENT_USAGE
+  try {
+    const data = await apiCall(`/energy/${buildingId}/current`)
+    return data || MOCK_CURRENT_USAGE
+  } catch {
+    return MOCK_CURRENT_USAGE
+  }
+}
 
-export const getCurrentUsage = (buildingId) =>
-  safeFetch(`${API_BASE}/energy/${buildingId}/current`, MOCK_CURRENT_USAGE)
-
-export const getFloorHeatmap = (buildingId) =>
-  safeFetch(`${API_BASE}/energy/${buildingId}/floors`, MOCK_FLOOR_HEATMAP)
+export const getFloorHeatmap = async (buildingId) => {
+  if (!buildingId) return MOCK_FLOOR_HEATMAP
+  try {
+    const data = await apiCall(`/energy/${buildingId}/floors`)
+    return Array.isArray(data) ? data : MOCK_FLOOR_HEATMAP
+  } catch {
+    return MOCK_FLOOR_HEATMAP
+  }
+}

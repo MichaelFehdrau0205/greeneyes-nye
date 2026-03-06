@@ -17,39 +17,36 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 export default function EnergyChart({ data = [] }) {
-  const defaultData = [
-    { day: 'Mon', kwh_actual: 820, kwh_limit: 900 },
-    { day: 'Tue', kwh_actual: 910, kwh_limit: 900 },
-    { day: 'Wed', kwh_actual: 875, kwh_limit: 900 },
-    { day: 'Thu', kwh_actual: 760, kwh_limit: 900 },
-    { day: 'Fri', kwh_actual: 930, kwh_limit: 900 },
-    { day: 'Sat', kwh_actual: 680, kwh_limit: 900 },
-    { day: 'Sun', kwh_actual: 847, kwh_limit: 900 },
-  ]
-
-  const chartData = data.length ? data : defaultData
+  const chartData = data
+  const limit = chartData[0]?.kwh_limit ?? 900
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 h-full">
       <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3">7-Day Energy Usage</p>
-      <ResponsiveContainer width="100%" height={160}>
-        <BarChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-          <XAxis dataKey="day" tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-          <ReferenceLine y={900} stroke="#f87171" strokeDasharray="4 2" strokeWidth={1.5} label={{ value: 'LL97 Limit', fill: '#f87171', fontSize: 9, position: 'right' }} />
-          <Bar dataKey="kwh_actual" radius={[3, 3, 0, 0]} maxBarSize={32}>
-            {chartData.map((entry, idx) => (
-              <Cell
-                key={idx}
-                fill={entry.kwh_actual > entry.kwh_limit ? '#f87171' : '#4ade80'}
-                fillOpacity={0.85}
-              />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+      {chartData.length === 0 ? (
+        <div className="h-[160px] flex items-center justify-center text-center border border-gray-800 rounded-lg bg-gray-950/30">
+          <p className="text-xs text-gray-500">No energy data for this building yet.</p>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={160}>
+          <BarChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+            <XAxis dataKey="day" tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: '#6b7280', fontSize: 10 }} axisLine={false} tickLine={false} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+            <ReferenceLine y={limit} stroke="#f87171" strokeDasharray="4 2" strokeWidth={1.5} label={{ value: 'LL97 Limit', fill: '#f87171', fontSize: 9, position: 'right' }} />
+            <Bar dataKey="kwh_actual" radius={[3, 3, 0, 0]} maxBarSize={32}>
+              {chartData.map((entry, idx) => (
+                <Cell
+                  key={idx}
+                  fill={entry.kwh_actual > entry.kwh_limit ? '#f87171' : '#4ade80'}
+                  fillOpacity={0.85}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
     </div>
   )
 }

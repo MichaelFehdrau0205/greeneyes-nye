@@ -1,21 +1,17 @@
-const API_BASE = '/api'
+import { apiCall } from '../lib/apiClient'
 
 const MOCK_BUILDINGS = [
-  { id: 1, name: '30 Hudson Yards', address: '30 Hudson Yards, New York, NY 10001', borough: 'Manhattan', floors: 73, gross_sq_ft: 2600000 },
-  { id: 2, name: 'One World Trade Center', address: '285 Fulton St, New York, NY 10007', borough: 'Manhattan', floors: 104, gross_sq_ft: 3500000 },
-  { id: 3, name: '432 Park Avenue', address: '432 Park Ave, New York, NY 10022', borough: 'Manhattan', floors: 96, gross_sq_ft: 396000 },
+  { id: 1,  name: '30 Hudson Yards',            address: '30 Hudson Yards, New York, NY 10001',           borough: 'Manhattan',     floors: 73,  gross_sq_ft: 2600000 },
+  { id: 2,  name: 'One World Trade Center',     address: '285 Fulton St, New York, NY 10007',             borough: 'Manhattan',     floors: 104, gross_sq_ft: 3500000 },
+  { id: 3,  name: '432 Park Avenue',            address: '432 Park Ave, New York, NY 10022',              borough: 'Manhattan',     floors: 96,  gross_sq_ft: 396000  },
+  { id: 4,  name: 'Empire State Building',      address: '20 W 34th St, New York, NY 10001',              borough: 'Manhattan',     floors: 102, gross_sq_ft: 2768591 },
+  { id: 5,  name: 'One Vanderbilt',             address: '1 Vanderbilt Ave, New York, NY 10017',          borough: 'Manhattan',     floors: 67,  gross_sq_ft: 1657198 },
+  { id: 6,  name: '111 Wall Street',            address: '111 Wall St, New York, NY 10005',               borough: 'Manhattan',     floors: 33,  gross_sq_ft: 1258500 },
+  { id: 7,  name: 'Yankee Stadium',             address: '1 E 161st St, Bronx, NY 10451',                borough: 'Bronx',         floors: 8,   gross_sq_ft: 1900000 },
+  { id: 8,  name: 'Barclays Center',            address: '620 Atlantic Ave, Brooklyn, NY 11217',          borough: 'Brooklyn',      floors: 6,   gross_sq_ft: 675000  },
+  { id: 9,  name: 'Queens Center Mall',         address: '90-15 Queens Blvd, Elmhurst, NY 11373',        borough: 'Queens',        floors: 3,   gross_sq_ft: 1000000 },
+  { id: 10, name: 'Staten Island Borough Hall', address: '10 Richmond Terrace, Staten Island, NY 10301', borough: 'Staten Island', floors: 5,   gross_sq_ft: 90000   },
 ]
-
-const MOCK_LL97 = {
-  building_id: 1,
-  year: 2025,
-  carbon_limit: 4.2,
-  energy_limit: 38.5,
-  fine_per_ton: 268,
-  fine_risk_amount: 42000,
-  days_until_deadline: 60,
-  deadline: '2025-05-01',
-}
 
 const MOCK_COMPLIANCE = {
   building_id: 1,
@@ -27,20 +23,38 @@ const MOCK_COMPLIANCE = {
   days_remaining: 60,
 }
 
-async function safeFetch(url, fallback) {
+export const getBuildings = async () => {
   try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return res.json()
+    const data = await apiCall('/buildings')
+    return Array.isArray(data) ? data : MOCK_BUILDINGS
   } catch {
-    return fallback
+    return MOCK_BUILDINGS
   }
 }
 
-export const getBuildings = () => safeFetch(`${API_BASE}/buildings`, MOCK_BUILDINGS)
+export const getBuildingById = async (id) => {
+  try {
+    const data = await apiCall(`/buildings/${id}`)
+    return data || MOCK_BUILDINGS.find(b => b.id === id) || null
+  } catch {
+    return MOCK_BUILDINGS.find(b => b.id === id) || null
+  }
+}
 
-export const getBuildingById = (id) => safeFetch(`${API_BASE}/buildings/${id}`, MOCK_BUILDINGS.find(b => b.id === id) || MOCK_BUILDINGS[0])
+export const getLL97Data = async (buildingId) => {
+  try {
+    const data = await apiCall(`/buildings/${buildingId}/ll97`)
+    return data || {}
+  } catch {
+    return {}
+  }
+}
 
-export const getLL97Data = (buildingId) => safeFetch(`${API_BASE}/buildings/${buildingId}/ll97`, MOCK_LL97)
-
-export const getComplianceSnapshot = (buildingId) => safeFetch(`${API_BASE}/buildings/${buildingId}/compliance`, MOCK_COMPLIANCE)
+export const getComplianceSnapshot = async (buildingId) => {
+  try {
+    const data = await apiCall(`/buildings/${buildingId}/compliance`)
+    return (data && data.ll97_emissions_pct != null) ? data : MOCK_COMPLIANCE
+  } catch {
+    return MOCK_COMPLIANCE
+  }
+}

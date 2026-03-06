@@ -7,12 +7,7 @@ const STATUS_COLOR = {
 }
 
 export default function FloorHeatmap({ floors = [] }) {
-  const defaultFloors = Array.from({ length: 30 }, (_, i) => ({
-    floor: i + 1,
-    energy_status: i === 5 || i === 17 ? 'critical' : i === 9 || i === 22 ? 'elevated' : 'normal',
-  }))
-
-  const data = floors.length ? floors : defaultFloors
+  const data = floors
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50">
@@ -27,28 +22,34 @@ export default function FloorHeatmap({ floors = [] }) {
           ))}
         </div>
       </div>
-      <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(10, 1fr)' }}>
-        {data.slice(0, 30).map((f) => {
-          const s = STATUS_COLOR[f.energy_status] || STATUS_COLOR.normal
-          return (
-            <div
-              key={f.floor}
-              className="relative rounded-sm flex items-center justify-center cursor-default transition-all hover:opacity-100 group"
-              style={{
-                height: '28px',
-                background: s.bg,
-                opacity: s.opacity,
-              }}
-              title={`Floor ${f.floor}: ${f.energy_status}`}
-            >
-              <span className="text-[8px] font-bold text-white/80">{f.floor}</span>
-              <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[8px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 border border-gray-700">
-                FL {f.floor} — {f.energy_status}
+      {data.length === 0 ? (
+        <div className="h-[200px] flex items-center justify-center text-center border border-gray-800 rounded-lg bg-gray-950/30">
+          <p className="text-xs text-gray-500">No floor data for this building yet.</p>
+        </div>
+      ) : (
+        <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(10, 1fr)' }}>
+          {data.slice(0, 30).map((f) => {
+            const s = STATUS_COLOR[f.energy_status] || STATUS_COLOR.normal
+            return (
+              <div
+                key={f.floor}
+                className="relative rounded-sm flex items-center justify-center cursor-default transition-all hover:opacity-100 group"
+                style={{
+                  height: '28px',
+                  background: s.bg,
+                  opacity: s.opacity,
+                }}
+                title={`Floor ${f.floor}: ${f.energy_status}`}
+              >
+                <span className="text-[8px] font-bold text-white/80">{f.floor}</span>
+                <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[8px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 border border-gray-700">
+                  FL {f.floor} — {f.energy_status}
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

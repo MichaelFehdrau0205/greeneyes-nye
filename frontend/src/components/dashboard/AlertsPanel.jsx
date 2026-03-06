@@ -14,13 +14,7 @@ const TYPE_ICON = {
 }
 
 export default function AlertsPanel({ alerts = [] }) {
-  const defaultAlerts = [
-    { id: 1, alert_type: 'HVAC', severity: 'critical', title: 'HVAC Overload – Floor 42', description: 'Unit 42-A drawing 340% above baseline.' },
-    { id: 2, alert_type: 'WATER', severity: 'warning', title: 'Water Pressure Anomaly – Floor 18', description: '18% below normal. Possible leak in riser.' },
-    { id: 3, alert_type: 'LIGHTING', severity: 'info', title: 'Lights On After Hours – Floor 7', description: 'No motion detected since 11 PM.' },
-  ]
-
-  const data = alerts.length ? alerts : defaultAlerts
+  const data = alerts
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-red-400/20 kpi-glow-red h-full">
@@ -31,29 +25,35 @@ export default function AlertsPanel({ alerts = [] }) {
         </span>
       </div>
 
-      <div className="space-y-2">
-        {data.map(alert => {
-          const s = SEVERITY_STYLE[alert.severity] || SEVERITY_STYLE.info
-          const icon = TYPE_ICON[alert.alert_type] || TYPE_ICON.DEFAULT
-          return (
-            <div key={alert.id} className="bg-gray-800/40 rounded-lg p-2.5 border border-gray-700/40">
-              <div className="flex items-start gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${s.dot} animate-pulse`} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm">{icon}</span>
-                    <span className="text-[11px] font-bold text-white truncate">{alert.title}</span>
-                    <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded border ${s.badge} flex-shrink-0`}>
-                      {s.label}
-                    </span>
+      {data.length === 0 ? (
+        <div className="h-[170px] flex items-center justify-center text-center border border-gray-800 rounded-lg bg-gray-950/30">
+          <p className="text-xs text-gray-500">No active alerts for this building.</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {data.map(alert => {
+            const s = SEVERITY_STYLE[alert.severity] || SEVERITY_STYLE.info
+            const icon = TYPE_ICON[alert.alert_type] || TYPE_ICON.DEFAULT
+            return (
+              <div key={alert.id} className="bg-gray-800/40 rounded-lg p-2.5 border border-gray-700/40">
+                <div className="flex items-start gap-2">
+                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${s.dot} animate-pulse`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-sm">{icon}</span>
+                      <span className="text-[11px] font-bold text-white truncate">{alert.title}</span>
+                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded border ${s.badge} flex-shrink-0`}>
+                        {s.label}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 mt-0.5 leading-relaxed">{alert.description}</p>
                   </div>
-                  <p className="text-[10px] text-gray-500 mt-0.5 leading-relaxed">{alert.description}</p>
                 </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

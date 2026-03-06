@@ -10,14 +10,16 @@ import AlertsPanel from '../dashboard/AlertsPanel'
 import SystemsStatus from '../dashboard/SystemsStatus'
 import KPICard from '../dashboard/KPICard'
 
-import { getComplianceSnapshot } from '../../api/buildings'
+import { getBuildingById, getComplianceSnapshot } from '../../api/buildings'
 import { getEnergyReadings, getCurrentUsage, getFloorHeatmap } from '../../api/energy'
 import { getSolarReadings } from '../../api/solar'
 import { getAlerts } from '../../api/alerts'
 import { getSensors } from '../../api/sensors'
+import { db } from '../../lib/supabaseClient'
 
 export default function Page3Dashboard() {
-  const [buildingId, setBuildingId] = useState(1)
+  const [buildingId, setBuildingId] = useState('')
+  const [building, setBuilding] = useState(null)
   const [compliance, setCompliance] = useState(null)
   const [energy, setEnergy] = useState([])
   const [currentUsage, setCurrentUsage] = useState(null)
@@ -27,13 +29,54 @@ export default function Page3Dashboard() {
   const [sensors, setSensors] = useState([])
 
   useEffect(() => {
-    getComplianceSnapshot(buildingId).then(setCompliance)
-    getEnergyReadings(buildingId).then(setEnergy)
-    getCurrentUsage(buildingId).then(setCurrentUsage)
-    getFloorHeatmap(buildingId).then(setFloors)
-    getSolarReadings(buildingId).then(setSolar)
-    getAlerts(buildingId).then(setAlerts)
-    getSensors(buildingId).then(setSensors)
+    if (!buildingId) return
+    let cancelled = false
+    setBuilding(null)
+    setCompliance(null)
+    setEnergy([])
+    setCurrentUsage(null)
+    setFloors([])
+    setSolar(null)
+    setAlerts([])
+    setSensors([])
+
+    const load = async () => {
+      const [
+        buildingData,
+        complianceData,
+        energyData,
+        currentUsageData,
+        floorsData,
+        solarData,
+        alertsData,
+        sensorsData,
+      ] = await Promise.all([
+        getBuildingById(buildingId),
+        getComplianceSnapshot(buildingId),
+        getEnergyReadings(buildingId),
+        getCurrentUsage(buildingId),
+        getFloorHeatmap(buildingId),
+        getSolarReadings(buildingId),
+        getAlerts(buildingId),
+        getSensors(buildingId),
+      ])
+
+      if (cancelled) return
+      setBuilding(buildingData)
+      setCompliance(complianceData)
+      setEnergy(energyData)
+      setCurrentUsage(currentUsageData)
+      setFloors(floorsData)
+      setSolar(solarData)
+      setAlerts(alertsData)
+      setSensors(sensorsData)
+    }
+
+    load()
+
+    return () => {
+      cancelled = true
+    }
   }, [buildingId])
 
   const user = { initials: 'JP', name: 'Joel Philip' }
@@ -84,17 +127,37 @@ export default function Page3Dashboard() {
 
       {/* ─── Dashboard Body ─── */}
       <div className="flex-1 p-5 grid gap-4" style={{ gridTemplateRows: 'auto auto auto auto', gridTemplateColumns: '1fr' }}>
+        {!db && (
+          <div className="dashboard-panel rounded-xl p-4 border border-amber-400/25 bg-amber-500/5">
+            <p className="text-xs text-amber-200 font-bold mb-1">Supabase not connected</p>
+            <p className="text-[11px] text-gray-400">
+              Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (or `VITE_SUPABASE_PUBLISHABLE_KEY`) in `frontend/.env.local` and restart `npm run dev`.
+            </p>
+          </div>
+        )}
+
+        {db && buildingId && (
+          <div className="flex items-center justify-between px-1">
+            <div className="min-w-0">
+              <p className="text-[10px] text-gray-500 uppercase tracking-widest">Selected building</p>
+              <p className="text-xs text-white font-bold truncate">
+                {building?.name ? `${building.name}${building?.borough ? ` — ${building.borough}` : ''}` : buildingId}
+              </p>
+            </div>
+            <span className="text-[10px] text-gray-600 font-mono truncate max-w-[50%]">{buildingId}</span>
+          </div>
+        )}
 
         {/* ROW 1 — Compliance trio */}
         <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 1.6fr 0.8fr' }}>
           <FineRiskMeter
-            riskAmount={compliance?.fine_risk_amount ?? 42000}
-            riskPct={compliance?.ll97_emissions_pct ?? 58}
+            riskAmount={compliance?.fine_risk_amount ?? 0}
+            riskPct={compliance?.ll97_emissions_pct ?? 0}
           />
           <ComplianceProgress data={compliance} />
           <CountdownTimer
-            days={compliance?.days_remaining ?? 60}
-            deadline={compliance?.deadline ?? '2025-05-01'}
+            days={compliance?.days_remaining ?? 0}
+            deadline={compliance?.deadline ?? '—'}
           />
         </div>
 
@@ -102,10 +165,10 @@ export default function Page3Dashboard() {
         <div className="grid gap-4" style={{ gridTemplateColumns: '0.6fr 2fr' }}>
           <KPICard
             title="Current Usage"
-            value={currentUsage?.current_kw ?? 847}
+            value={currentUsage?.current_kw ?? 0}
             unit="kW"
-            change={currentUsage?.change_pct ?? 12}
-            direction={currentUsage?.direction ?? 'up'}
+            change={currentUsage?.change_pct}
+            direction={currentUsage?.direction}
             icon="⚡"
             glowColor="green"
           />
@@ -116,10 +179,10 @@ export default function Page3Dashboard() {
         <div className="grid gap-4" style={{ gridTemplateColumns: '0.6fr 1.2fr 1.4fr 1fr' }}>
           <KPICard
             title="Solar Output"
-            value={solar?.output_kw ?? 214}
+            value={solar?.output_kw ?? 0}
             unit="kW"
-            change={solar?.change_pct ?? 3}
-            direction={solar?.direction ?? 'down'}
+            change={solar?.change_pct}
+            direction={solar?.direction}
             icon="☀️"
             glowColor="yellow"
           />
@@ -132,7 +195,7 @@ export default function Page3Dashboard() {
         <div className="grid gap-4" style={{ gridTemplateColumns: '0.6fr 2fr' }}>
           <KPICard
             title="Active Alerts"
-            value={alerts.length || 3}
+            value={alerts.length}
             icon="🚨"
             glowColor="red"
             subtitle="Requires attention"

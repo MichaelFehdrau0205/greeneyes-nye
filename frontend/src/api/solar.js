@@ -1,8 +1,8 @@
-const API_BASE = '/api'
+import { apiCall } from '../lib/apiClient'
 
 const MOCK_SOLAR = {
   output_kw: 214,
-  change_pct: -3,
+  change_pct: 3,
   direction: 'down',
   output_kwh_today: 1240,
   co2_offset_tons: 0.82,
@@ -13,18 +13,14 @@ const MOCK_SOLAR = {
   h_score: 61,
 }
 
-async function safeFetch(url, fallback) {
+export const getSolarReadings = async (buildingId) => {
+  if (!buildingId) return MOCK_SOLAR
   try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return res.json()
+    const data = await apiCall(`/solar/${buildingId}`)
+    return data || MOCK_SOLAR
   } catch {
-    return fallback
+    return MOCK_SOLAR
   }
 }
 
-export const getSolarReadings = (buildingId) =>
-  safeFetch(`${API_BASE}/solar/${buildingId}`, MOCK_SOLAR)
-
-export const getSolarPerformance = (buildingId) =>
-  safeFetch(`${API_BASE}/solar/${buildingId}/performance`, MOCK_SOLAR)
+export const getSolarPerformance = getSolarReadings

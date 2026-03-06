@@ -1,4 +1,4 @@
-const API_BASE = '/api'
+import { apiCall } from '../lib/apiClient'
 
 const MOCK_SENSORS = [
   { id: 1, sensor_type: 'HVAC', status: 'WARN', last_heartbeat: new Date().toISOString(), location: 'Roof & Mechanical' },
@@ -8,18 +8,22 @@ const MOCK_SENSORS = [
   { id: 5, sensor_type: 'Backup Power', status: 'ONLINE', last_heartbeat: new Date().toISOString(), location: 'Basement Level B2' },
 ]
 
-async function safeFetch(url, fallback) {
+export const getSensors = async (buildingId) => {
+  if (!buildingId) return MOCK_SENSORS
   try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return res.json()
+    const data = await apiCall(`/sensors/${buildingId}`)
+    return Array.isArray(data) ? data : MOCK_SENSORS
   } catch {
-    return fallback
+    return MOCK_SENSORS
   }
 }
 
-export const getSensors = (buildingId) =>
-  safeFetch(`${API_BASE}/sensors/${buildingId}`, MOCK_SENSORS)
-
-export const getSensorStatus = (buildingId) =>
-  safeFetch(`${API_BASE}/sensors/${buildingId}/status`, { online: true, last_heartbeat: new Date().toISOString() })
+export const getSensorStatus = async (buildingId) => {
+  const sensors = await getSensors(buildingId)
+  const anyOnline = sensors.some(s => s.status === 'ONLINE')
+  const latest = sensors[0]
+  return {
+    online: anyOnline,
+    last_heartbeat: latest?.last_heartbeat || new Date().toISOString(),
+  }
+}
