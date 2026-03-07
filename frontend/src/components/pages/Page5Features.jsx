@@ -219,65 +219,72 @@ export default function Page5Features() {
   return (
     <section
       id="page5"
-      className="relative min-h-screen overflow-hidden flex items-center"
+      className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center py-8 pb-24"
       style={{ background: 'linear-gradient(135deg, #e8edf2 0%, #d4e8e0 50%, #cde0e8 100%)' }}
     >
       {/* Subtle dot grid */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(34,197,94,0.1) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }}
       />
 
-      {/* ── LEFT: Blueprint building ── */}
-      <div className="relative z-10 flex-shrink-0 ml-10" style={{ width: '420px', height: '540px' }}>
-        <div className="rounded-xl overflow-hidden shadow-2xl w-full h-full">
-          <BlueprintBuilding />
-        </div>
-        <p className="text-center text-[11px] text-gray-400 mt-2 font-mono tracking-wider">SMART BUILDING · BLUEPRINT VIEW</p>
-      </div>
-
-      {/* ── CENTER: 5 feature buttons ── */}
-      <div className="relative z-10 flex flex-col items-center justify-center gap-3 flex-1 px-6">
-        <p className="text-xs text-gray-400 font-bold tracking-[0.3em] uppercase mb-3">Platform Features</p>
-        {FEATURES.map(f => (
-          <button
-            key={f.id}
-            onClick={() => setActive(f)}
-            className="w-full max-w-[220px] flex items-center gap-3 px-5 py-3 rounded-xl font-bold text-sm transition-all duration-200 border shadow-sm"
+      {/* Main row: building | buttons | iPad — all within page */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 flex items-center justify-center gap-8 lg:gap-12">
+        {/* ── LEFT: Black box + building only (no outer container) ── */}
+        <div className="relative flex-shrink-0 hidden sm:flex flex-col items-center mt-12">
+          <div
+            className="overflow-hidden"
             style={{
-              background: active.id === f.id ? `${f.color}18` : 'white',
-              borderColor: active.id === f.id ? f.color : '#e5e7eb',
-              color: active.id === f.id ? f.color : '#374151',
-              boxShadow: active.id === f.id ? `0 0 0 2px ${f.color}44, 0 4px 16px ${f.color}22` : undefined,
-              transform: active.id === f.id ? 'scale(1.04)' : undefined,
+              width: '165px',
+              height: '420px',
+              background: '#0f2942',
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.4), 0 12px 24px -8px rgba(0,0,0,0.3)',
             }}
           >
-            <span className="text-lg flex-shrink-0">{f.icon}</span>
-            <span>{f.label}</span>
-            {active.id === f.id && <span className="ml-auto text-xs">→</span>}
-          </button>
-        ))}
+            <BlueprintBuilding activeFeatureId={active.id} />
+          </div>
+          <p className="text-center text-[11px] text-gray-500 font-mono tracking-wider mt-3">SMART BUILDING · BLUEPRINT VIEW</p>
+        </div>
 
-        {/* Active feature description */}
-        <div className="mt-4 max-w-[220px] text-center">
-          <p className="text-xs text-gray-500 leading-relaxed">{active.desc}</p>
+        {/* ── CENTER: Feature buttons ── */}
+        <div className="relative flex flex-col items-center justify-center gap-2.5 flex-shrink-0">
+          <p className="text-xs text-gray-400 font-bold tracking-[0.3em] uppercase mb-2">Platform Features</p>
+          {FEATURES.map(f => (
+            <button
+              key={f.id}
+              onClick={() => setActive(f)}
+              className="w-full max-w-[200px] flex items-center gap-3 px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 border shadow-sm"
+              style={{
+                background: active.id === f.id ? `${f.color}18` : 'rgba(248,250,252,0.95)',
+                borderColor: active.id === f.id ? f.color : '#e2e8f0',
+                color: active.id === f.id ? f.color : '#374151',
+                boxShadow: active.id === f.id ? `0 0 0 2px ${f.color}44, 0 4px 16px ${f.color}22` : undefined,
+                transform: active.id === f.id ? 'scale(1.04)' : undefined,
+              }}
+            >
+              <span className="text-lg flex-shrink-0">{f.icon}</span>
+              <span>{f.label}</span>
+              {active.id === f.id && <span className="ml-auto text-xs">→</span>}
+            </button>
+          ))}
+          <div className="mt-3 max-w-[200px] text-center">
+            <p className="text-xs text-gray-500 leading-relaxed">{active.desc}</p>
+          </div>
+        </div>
+
+        {/* ── RIGHT: iPad fully on page ── */}
+        <div className="relative flex-shrink-0 flex items-center justify-center">
+          <div className="animate-float" style={{ animationDelay: '0.3s' }}>
+            <IPadMockup scale={0.62}>
+              <FeatureIPadScreen feature={active} />
+            </IPadMockup>
+          </div>
         </div>
       </div>
 
-      {/* ── RIGHT: Half iPad overflowing right edge ── */}
-      <div
-        className="relative z-10 flex-shrink-0 flex items-center"
-        style={{ marginRight: '-180px' }}
-      >
-        <div className="animate-float" style={{ animationDelay: '0.3s' }}>
-          <IPadMockup clipRight scale={0.85}>
-            <FeatureIPadScreen feature={active} />
-          </IPadMockup>
-        </div>
-      </div>
     </section>
   )
 }
