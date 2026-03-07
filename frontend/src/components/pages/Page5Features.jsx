@@ -39,7 +39,7 @@ function ComplianceIPadScreen() {
         <div className="bg-gray-800/50 rounded-lg p-3">
           <p className="text-[7px] text-gray-400 mb-1">FINE RISK</p>
           <p className="text-xl font-black text-yellow-300">$42K</p>
-          <p className="text-[7px] text-gray-500">projected 2025</p>
+          <p className="text-[7px] text-gray-500">projected 2026</p>
         </div>
         <div className="bg-gray-800/50 rounded-lg p-3">
           <p className="text-[7px] text-gray-400 mb-1">DEADLINE</p>

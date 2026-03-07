@@ -14,7 +14,7 @@ function Bar({ label, pct, color }) {
         <span className="text-xs text-gray-300 font-medium">{label}</span>
         <span className="text-xs font-bold" style={{ color }}>{pct}%</span>
       </div>
-      <div className="h-2 rounded-full bg-gray-800 overflow-hidden">
+      <div className="h-2.5 min-h-[10px] lg:h-3 rounded-full bg-gray-800 overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-1000 ease-out"
           style={{ width: `${width}%`, background: color, boxShadow: `0 0 6px ${color}55` }}
@@ -33,7 +33,7 @@ export default function ComplianceProgress({ data }) {
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50">
-      <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3">Monthly Compliance</p>
+      <p className="text-sm text-gray-400 font-medium tracking-wide uppercase mb-3">Monthly Compliance</p>
       {bars.map(b => <Bar key={b.label} {...b} />)}
     </div>
   )

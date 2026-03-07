@@ -19,7 +19,7 @@ export default function SystemsStatus({ sensors = [] }) {
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 h-full">
-      <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3">Systems Status</p>
+      <p className="text-sm text-gray-400 font-medium tracking-wide uppercase mb-3">Systems Status</p>
 
       {data.length === 0 ? (
         <div className="h-[170px] flex items-center justify-center text-center border border-gray-800 rounded-lg bg-gray-950/30">

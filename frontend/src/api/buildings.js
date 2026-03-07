@@ -19,7 +19,7 @@ const MOCK_COMPLIANCE = {
   energy_intensity_pct: 58,
   carbon_offset_pct: 41,
   fine_risk_amount: 42000,
-  deadline: '2025-05-01',
+  deadline: '2026-05-01',
   days_remaining: 60,
 }
 

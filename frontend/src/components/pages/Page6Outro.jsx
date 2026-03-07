@@ -71,7 +71,7 @@ export default function Page6Outro() {
 
       {/* Footer bar */}
       <div className="absolute bottom-0 left-0 right-0 px-16 py-5 flex items-center justify-between border-t border-green-400/20">
-        <p className="text-green-200 text-xs">© 2025 GreenEyes NYC. All rights reserved.</p>
+        <p className="text-green-200 text-xs">© 2026 GreenEyes NYC. All rights reserved.</p>
         <div className="flex items-center gap-6">
           {['Privacy', 'Terms', 'Contact'].map(link => (
             <a key={link} href="#" className="text-green-200 text-xs hover:text-white transition-colors">{link}</a>

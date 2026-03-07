@@ -19,7 +19,7 @@ export default function AlertsPanel({ alerts = [] }) {
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-red-400/20 kpi-glow-red h-full">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs text-gray-400 font-medium tracking-wide uppercase">Active Alerts</p>
+        <p className="text-sm text-gray-400 font-medium tracking-wide uppercase">Active Alerts</p>
         <span className="bg-red-400 text-white text-xs font-black px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse">
           {data.length}
         </span>

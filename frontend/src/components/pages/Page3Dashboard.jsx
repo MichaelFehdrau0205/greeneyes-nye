@@ -15,8 +15,6 @@ import { getEnergyReadings, getCurrentUsage, getFloorHeatmap } from '../../api/e
 import { getSolarReadings } from '../../api/solar'
 import { getAlerts } from '../../api/alerts'
 import { getSensors } from '../../api/sensors'
-import { db } from '../../lib/supabaseClient'
-
 export default function Page3Dashboard() {
   const [buildingId, setBuildingId] = useState('')
   const [building, setBuilding] = useState(null)
@@ -125,18 +123,9 @@ export default function Page3Dashboard() {
         </div>
       </header>
 
-      {/* ─── Dashboard Body ─── */}
-      <div className="flex-1 p-5 grid gap-4" style={{ gridTemplateRows: 'auto auto auto auto', gridTemplateColumns: '1fr' }}>
-        {!db && (
-          <div className="dashboard-panel rounded-xl p-4 border border-amber-400/25 bg-amber-500/5">
-            <p className="text-xs text-amber-200 font-bold mb-1">Supabase not connected</p>
-            <p className="text-[11px] text-gray-400">
-              Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (or `VITE_SUPABASE_PUBLISHABLE_KEY`) in `frontend/.env.local` and restart `npm run dev`.
-            </p>
-          </div>
-        )}
-
-        {db && buildingId && (
+      {/* ─── Dashboard Body (max-width so layout doesn't stretch on 65" / big desktop) ─── */}
+      <div className="flex-1 w-full max-w-[1600px] mx-auto p-5 grid gap-4" style={{ gridTemplateRows: 'auto auto auto auto', gridTemplateColumns: '1fr' }}>
+        {buildingId && (
           <div className="flex items-center justify-between px-1">
             <div className="min-w-0">
               <p className="text-[10px] text-gray-500 uppercase tracking-widest">Selected building</p>

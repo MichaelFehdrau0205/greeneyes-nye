@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function CountdownTimer({ days = 60, deadline = '2025-05-01' }) {
+export default function CountdownTimer({ days = 60, deadline = '2026-05-01' }) {
   const urgency = days <= 30 ? 'text-red-400 border-red-400/25' : days <= 60 ? 'text-amber-400 border-amber-400/25' : 'text-green-400 border-green-400/25'
   const ring = days <= 30 ? '#f87171' : days <= 60 ? '#fbbf24' : '#4ade80'
 
   return (
     <div className={`dashboard-panel rounded-xl p-4 border ${urgency.split(' ')[1]} flex flex-col items-center justify-center text-center`}>
-      <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3">Compliance Deadline</p>
+      <p className="text-sm text-gray-400 font-medium tracking-wide uppercase mb-3">Compliance Deadline</p>
 
       {/* Ring countdown */}
       <div className="relative w-20 h-20 mb-3">

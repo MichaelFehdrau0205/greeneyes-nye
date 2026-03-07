@@ -40,10 +40,10 @@ export default function FineRiskMeter({ riskAmount = 0, riskPct = 0 }) {
   const riskColor = safePct < 33 ? '#4ade80' : safePct < 66 ? '#fbbf24' : '#f87171'
 
   return (
-    <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 flex flex-col items-center">
-      <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-2">Fine Risk Meter</p>
+    <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50 flex flex-col items-center min-w-[180px]">
+      <p className="text-sm text-gray-400 font-medium tracking-wide uppercase mb-2">Fine Risk Meter</p>
 
-      <svg viewBox="0 0 200 140" className="w-full max-w-[180px]">
+      <svg viewBox="0 0 200 140" className="w-full min-w-[160px] max-w-[180px] lg:min-w-[200px] lg:max-w-[240px] flex-shrink-0">
         {/* Background arc */}
         <path d={arcPath(cx, cy, r, startDeg, endDeg)} fill="none" stroke="#1e293b" strokeWidth="16" strokeLinecap="round" />
 
@@ -90,7 +90,7 @@ export default function FineRiskMeter({ riskAmount = 0, riskPct = 0 }) {
         <text x={cx + r + 4} y={cy + 24} fill="#f87171" fontSize="7" fontFamily="sans-serif" textAnchor="middle">HIGH</text>
 
         {/* Dollar amount */}
-        <text x={cx} y={cy + 32} fill="white" fontSize="13" fontFamily="sans-serif" fontWeight="700" textAnchor="middle">
+        <text x={cx} y={cy + 32} fill="white" fontSize="17" fontFamily="sans-serif" fontWeight="700" textAnchor="middle">
           ${safeAmount.toLocaleString()}
         </text>
         <text x={cx} y={cy + 44} fill="#6b7280" fontSize="7" fontFamily="sans-serif" textAnchor="middle">projected fine</text>

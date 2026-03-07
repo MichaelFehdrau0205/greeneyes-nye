@@ -22,7 +22,7 @@ export default function SolarWidget({ data }) {
 
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-amber-400/20 h-full">
-      <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3">Solar Performance</p>
+      <p className="text-sm text-gray-400 font-medium tracking-wide uppercase mb-3">Solar Performance</p>
 
       {!d ? (
         <div className="h-[170px] flex items-center justify-center text-center border border-gray-800 rounded-lg bg-gray-950/30">

@@ -30,7 +30,7 @@ export default function BlueprintBuilding() {
 
       {/* Title block */}
       <text x="14" y="18" className="bp-text" fill="#4a9fd4" fontSize="9" fontFamily="Courier New">GREENEYES NYC — SMART BUILDING</text>
-      <text x="14" y="28" className="bp-text" fill="rgba(74,159,212,0.5)" fontSize="7" fontFamily="Courier New">ENERGY REDUCTION MONITOR · REV 2025-A</text>
+      <text x="14" y="28" className="bp-text" fill="rgba(74,159,212,0.5)" fontSize="7" fontFamily="Courier New">ENERGY REDUCTION MONITOR · REV 2026-A</text>
       <line x1="10" y1="32" x2="410" y2="32" stroke="rgba(74,159,212,0.3)" strokeWidth="0.5" />
 
       {/* SOLAR PANEL — ROOF */}

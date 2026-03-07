@@ -59,7 +59,7 @@ const ll97Configs = [
   { carbon_limit: 3.5,  energy_limit: 32.0, fine_per_ton: 268 },
 ]
 buildingIds.forEach((id, i) => {
-  insertLL97.run({ building_id: id, year: 2025, ...ll97Configs[i] })
+  insertLL97.run({ building_id: id, year: 2026, ...ll97Configs[i] })
 })
 
 // ── Compliance Snapshots ──
@@ -81,7 +81,7 @@ const complianceData = [
   { ll97_emissions_pct: 22, energy_intensity_pct: 18, carbon_offset_pct: 88, fine_risk_amount: 0 },
 ]
 buildingIds.forEach((id, i) => {
-  insertCompliance.run({ building_id: id, snapshot_date: today, days_remaining: 60, deadline: '2025-05-01', ...complianceData[i] })
+  insertCompliance.run({ building_id: id, snapshot_date: today, days_remaining: 60, deadline: '2026-05-01', ...complianceData[i] })
 })
 
 // ── Energy Readings (7 days per building) ──
@@ -153,7 +153,7 @@ const alertSets = [
   ],
   // One WTC
   [
-    { alert_type: 'LL97',     severity: 'critical', title: 'LL97 Penalty Risk – Q2 Deadline',   description: 'Projected emissions exceed 2025 cap by 12%. $18,500 fine risk if unresolved.' },
+    { alert_type: 'LL97',     severity: 'critical', title: 'LL97 Penalty Risk – Q2 Deadline',   description: 'Projected emissions exceed 2026 cap by 12%. $18,500 fine risk if unresolved.' },
     { alert_type: 'HVAC',    severity: 'warning',  title: 'Chiller Efficiency Drop – B2',       description: 'Chiller unit B2 operating at 61% efficiency. Maintenance recommended.' },
   ],
   // 432 Park
@@ -175,7 +175,7 @@ const alertSets = [
   ],
   // 111 Wall St
   [
-    { alert_type: 'LL97',     severity: 'critical', title: 'LL97 Cap Exceeded – Penalty Active', description: 'Emissions at 102% of limit. $187,000 fine already triggered for 2025.' },
+    { alert_type: 'LL97',     severity: 'critical', title: 'LL97 Cap Exceeded – Penalty Active', description: 'Emissions at 102% of limit. $187,000 fine already triggered for 2026.' },
     { alert_type: 'HVAC',     severity: 'critical', title: 'Cooling Tower Failure',             description: 'Rooftop cooling tower offline since Monday. Building running on backup units.' },
     { alert_type: 'ENERGY',   severity: 'critical', title: 'Energy Intensity Limit Breached',   description: 'kBtu/sqft exceeds LL97 threshold. Immediate load reduction required.' },
     { alert_type: 'WATER',    severity: 'warning',  title: 'Leak Detected – Basement Riser',    description: 'Flow sensor 3B showing continuous low-level flow. Plumber dispatched.' },

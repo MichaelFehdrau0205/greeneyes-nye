@@ -12,7 +12,7 @@ export default function FloorHeatmap({ floors = [] }) {
   return (
     <div className="dashboard-panel rounded-xl p-4 border border-gray-700/50">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs text-gray-400 font-medium tracking-wide uppercase">Floor Energy Grid</p>
+        <p className="text-sm text-gray-400 font-medium tracking-wide uppercase">Floor Energy Grid</p>
         <div className="flex gap-2">
           {Object.entries(STATUS_COLOR).map(([k, v]) => (
             <span key={k} className="flex items-center gap-1 text-[9px] text-gray-500">

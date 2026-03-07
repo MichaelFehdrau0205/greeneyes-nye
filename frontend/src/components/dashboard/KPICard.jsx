@@ -22,7 +22,7 @@ export default function KPICard({ title, value, unit, change, direction, icon, g
   return (
     <div className={`dashboard-panel rounded-xl p-4 border ${borderColor} ${glowClass}`}>
       <div className="flex items-start justify-between mb-2">
-        <p className="text-xs text-gray-400 font-medium tracking-wide uppercase">{title}</p>
+        <p className="text-sm text-gray-400 font-medium tracking-wide uppercase">{title}</p>
         {icon && <span className="text-lg">{icon}</span>}
       </div>
       <div className="flex items-end gap-2">
