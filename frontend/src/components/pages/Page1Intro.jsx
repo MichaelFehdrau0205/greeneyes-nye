@@ -24,7 +24,7 @@ export default function Page1Intro() {
         </div>
 
         {/* Main tagline */}
-        <h1 className="text-7xl font-black text-white leading-[1.0] tracking-tight">
+        <h1 className="text-8xl font-black text-white leading-[1.0] tracking-tight">
           Reduce.<br />
           Monitor.<br />
           <span className="text-green-900">Comply.</span>

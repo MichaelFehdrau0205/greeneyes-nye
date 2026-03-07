@@ -25,7 +25,7 @@ export default function Page6Outro() {
         </div>
 
         {/* Main tagline */}
-        <h2 className="text-7xl font-black text-white leading-[1.0] tracking-tight">
+        <h2 className="text-8xl font-black text-white leading-[1.0] tracking-tight">
           Greener.<br />
           Smarter.<br />
           <span className="text-green-900">NYC.</span>
