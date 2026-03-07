@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function IPhoneMockup({ children, label, accentColor = '#22c55e', scale = 1 }) {
+export default function IPhoneMockup({ children, label, accentColor = '#22c55e', labelColor, scale = 1 }) {
   return (
     <div
       className="relative flex-shrink-0"
@@ -52,7 +52,10 @@ export default function IPhoneMockup({ children, label, accentColor = '#22c55e',
 
       {/* Label below phone */}
       {label && (
-        <div className="absolute -bottom-8 left-0 right-0 text-center text-xs font-semibold text-gray-400 tracking-wider uppercase">
+        <div
+          className="absolute -bottom-8 left-0 right-0 text-center text-xs font-semibold tracking-wider uppercase"
+          style={{ color: labelColor ?? '#9ca3af' }}
+        >
           {label}
         </div>
       )}

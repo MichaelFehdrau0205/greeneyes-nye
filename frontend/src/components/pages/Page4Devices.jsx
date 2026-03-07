@@ -10,7 +10,7 @@ function EnergyScreen() {
   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
   return (
     <div className="w-full h-full flex flex-col pt-10 px-3 pb-3" style={{ background: '#0d1117' }}>
-      <p className="text-[9px] text-gray-400 font-bold tracking-wider mb-0.5">ENERGY USAGE</p>
+      <p className="text-[9px] font-bold tracking-wider mb-0.5 text-green-500">ENERGY USAGE</p>
       <div className="flex items-end gap-0.5 justify-between mb-1" style={{ height: '80px' }}>
         {bars.map((v, i) => (
           <div key={i} className="flex flex-col items-center flex-1">
@@ -81,8 +81,8 @@ function AlertsScreen() {
   return (
     <div className="w-full h-full flex flex-col pt-10 px-3 pb-3" style={{ background: '#0d1117' }}>
       <div className="flex items-center justify-between mb-2">
-        <p className="text-[9px] text-gray-400 font-bold tracking-wider">🚨 ALERTS</p>
-        <span className="bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full animate-pulse">3</span>
+        <p className="text-[9px] font-bold tracking-wider text-red-500">🚨 ALERTS</p>
+        <span className="bg-amber-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full animate-pulse">3</span>
       </div>
       <div className="space-y-2">
         {alerts.map((a, i) => (
@@ -107,10 +107,10 @@ function AlertsScreen() {
 function ComplianceScreen() {
   return (
     <div className="w-full h-full flex flex-col pt-10 px-3 pb-3" style={{ background: '#0d1117' }}>
-      <p className="text-[9px] text-gray-400 font-bold tracking-wider mb-2">LL97 COMPLIANCE</p>
+      <p className="text-[9px] font-bold tracking-wider mb-2 text-blue-400">LL97 COMPLIANCE</p>
       <div className="text-center mb-2">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border-4 border-yellow-400 mb-1">
-          <span className="text-lg font-black text-yellow-300">58</span>
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border-4 border-blue-400 mb-1">
+          <span className="text-lg font-black text-blue-300">58</span>
         </div>
         <p className="text-[8px] text-gray-400">Risk Score</p>
       </div>
@@ -130,7 +130,7 @@ function ComplianceScreen() {
         </div>
       ))}
       <div className="mt-auto text-center border-t border-gray-800 pt-2">
-        <p className="text-yellow-300 text-xs font-black">60 days</p>
+        <p className="text-blue-300 text-xs font-black">60 days</p>
         <p className="text-[8px] text-gray-500">until deadline</p>
       </div>
     </div>
@@ -252,7 +252,7 @@ export default function Page4Devices() {
               className="animate-float"
               style={{ animationDelay: `${i * 0.2}s` }}
             >
-              <IPhoneMockup label={p.label} accentColor={p.accent} scale={0.9}>
+              <IPhoneMockup label={p.label} accentColor={p.accent} labelColor="#15803d" scale={0.9}>
                 {p.screen}
               </IPhoneMockup>
             </div>
