@@ -251,12 +251,15 @@ export default function Page5Features() {
 
         {/* ── CENTER: Feature buttons ── */}
         <div className="relative flex flex-col items-center justify-center gap-2.5 flex-shrink-0">
-          <p className="text-xs text-gray-400 font-bold tracking-[0.3em] uppercase mb-2">Platform Features</p>
+          <p className="text-xs text-gray-500 font-bold tracking-[0.3em] uppercase mb-2">Platform Features</p>
           {FEATURES.map(f => (
             <button
               key={f.id}
+              type="button"
               onClick={() => setActive(f)}
-              className="w-full max-w-[200px] flex items-center gap-3 px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 border shadow-sm"
+              aria-pressed={active.id === f.id}
+              aria-label={`${f.label}. ${active.id === f.id ? 'Selected' : 'Select to view'}`}
+              className="w-full max-w-[200px] flex items-center gap-3 px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 border shadow-sm hover:border-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
               style={{
                 background: active.id === f.id ? `${f.color}18` : 'rgba(248,250,252,0.95)',
                 borderColor: active.id === f.id ? f.color : '#e2e8f0',
@@ -265,9 +268,9 @@ export default function Page5Features() {
                 transform: active.id === f.id ? 'scale(1.04)' : undefined,
               }}
             >
-              <span className="text-lg flex-shrink-0">{f.icon}</span>
+              <span className="text-lg flex-shrink-0" aria-hidden>{f.icon}</span>
               <span>{f.label}</span>
-              {active.id === f.id && <span className="ml-auto text-xs">→</span>}
+              {active.id === f.id && <span className="ml-auto text-xs" aria-hidden>→</span>}
             </button>
           ))}
           <div className="mt-3 max-w-[200px] text-center">
